@@ -13,5 +13,17 @@ string prompt = @"
 List<string> options = new List<string> { "List All Products", "List All Customers", "List All Orders" };
 
 Menu mainMenu = new Menu(prompt, options);
-mainMenu.RunMenu();
-// 
+//mainMenu.RunMenu();
+// create a simple switch case to do something when the option is selected
+switch (mainMenu.RunMenu())
+{
+    case 0:
+        WriteLine("Option 1 was selected");
+        break;
+    case 1:
+        WriteLine("Option 2 was selected");
+        break;
+    case 2:
+        WriteLine("Option 3 was selected");
+        break;
+}

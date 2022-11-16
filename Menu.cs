@@ -3,6 +3,7 @@ internal class Menu
 {
     private List<string> Options;
     private string Prompt;
+    private int SelectedOption = 0;
 
     public Menu(string prompt, List<string> option)
     {
@@ -10,25 +11,62 @@ internal class Menu
         Options = option;
     }
 
-     public void DisplayOptions()
+     private void DisplayOptions()
     {
+        WriteLine(Prompt);
         for (int i = 0; i < Options.Count; i++)
         {
             string currentOption = Options[i];
             int currentIndex = i + 1;
-            WriteLine($"{currentIndex}. {currentOption}");
-        }
+            
 
-        WriteLine("Press any key to exit the menu.");
-        ReadKey();
+            if (i == SelectedOption)
+            {
+                ForegroundColor = ConsoleColor.Green;
+                BackgroundColor = ConsoleColor.Red;
+            }
+            WriteLine($"{currentIndex}. {currentOption}");
+            ResetColor();
+        }
     }
 
-    public void RunMenu()
+    private void OptionInRange()
     {
-        Clear();
-        DisplayOptions();
+        if (SelectedOption < 0)
+        {
+            SelectedOption = Options.Count - 1;
+        }
+        else if (SelectedOption > Options.Count - 1)
+        {
+            SelectedOption = 0;
+        }
+    }
+
+    public int RunMenu()
+    {
+        ConsoleKey keyPressed;
+
+        do
+        {            
+            Clear();
+            DisplayOptions();
+            keyPressed = ReadKey(true).Key;
+            if (keyPressed == ConsoleKey.UpArrow)
+            {
+                SelectedOption--;
+            }
+            else if (keyPressed == ConsoleKey.DownArrow)
+            {
+                SelectedOption++;
+            }
+
+            OptionInRange();
+
+        } while (keyPressed != ConsoleKey.Enter);
+
         // while the key pressed is not the enter key
         // keep on keepin on
+        return SelectedOption;
     }
 
     // how do we...
